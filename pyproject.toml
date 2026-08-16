@@ -1,0 +1,5 @@
+[tool.vercel]
+entrypoint = "api.download:app"
+
+[tool.vercel.functions]
+"api/download.py" = { maxDuration = 30 }
