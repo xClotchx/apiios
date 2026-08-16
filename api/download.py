@@ -1,11 +1,15 @@
 from flask import Flask, request, jsonify
-import yt_dlp
+import sys
+import traceback
 
 app = Flask(__name__)
 
 @app.route('/api/download', methods=['POST'])
 def download():
     try:
+        # Importar dentro de la función para atrapar errores de dependencias faltantes
+        import yt_dlp
+        
         data = request.get_json()
         if not data or 'url' not in data:
             return jsonify({'success': False, 'error': 'No URL provided in JSON body'}), 400
@@ -32,7 +36,9 @@ def download():
             })
             
     except Exception as e:
-        return jsonify({'success': False, 'error': str(e)}), 500
+        error_trace = traceback.format_exc()
+        print("ERROR:", error_trace, file=sys.stderr)
+        return jsonify({'success': False, 'error': str(e), 'trace': error_trace}), 500
 
 if __name__ == '__main__':
     app.run(debug=True)

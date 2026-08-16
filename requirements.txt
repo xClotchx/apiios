@@ -1,4 +1,4 @@
-flask
-yt-dlp
-setuptools
+flask==3.0.2
+yt-dlp==2024.3.10
+setuptools>=65.0.0
 wheel
